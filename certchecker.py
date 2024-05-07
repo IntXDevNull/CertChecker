@@ -2,7 +2,7 @@ import ssl
 import socket
 from datetime import datetime
 
-# Function to get SSL certificate expiration date
+# Get SSL/TLS certificate expiration date
 def get_certificate_expiry(domain):
     context = ssl.create_default_context()
     with socket.create_connection((domain, 443)) as sock:
@@ -12,7 +12,7 @@ def get_certificate_expiry(domain):
             expiry_date = datetime.strptime(cert['notAfter'], "%b %d %H:%M:%S %Y GMT")
             return expiry_date
 
-# Function to read domains from a file and get expiry dates
+# Read domains from a file and get expiry dates
 def check_certificates(filename):
     with open(filename, "r") as f:
         domains = f.readlines()
@@ -32,7 +32,7 @@ def check_certificates(filename):
                 # Calculate days left until expiration
                 days_left = (expiry_date - now).days
 
-                # Structured output
+                # Output to terminal
                 print(f"Domain: {domain}")
                 print(f"  Expires: {formatted_expiry_date}")
                 print(f"  Days left before expiration: {days_left}")
@@ -46,5 +46,5 @@ def check_certificates(filename):
                 print(f"  Error occurred: {e}")
                 print("")  # For separation
 
-# Check certificates from the file
+# Check certificates from the file.
 check_certificates("domains.txt")
